@@ -5,7 +5,7 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import Popup from './Popup';
 
-const Card = ({ type }) => {
+const Card = ({ type,user }) => {
 
     const [popup, setPopup] = useState(false);
 
@@ -18,10 +18,10 @@ const Card = ({ type }) => {
             <div className="cards">
                 <div className="display">
                     <div className="content">
-                        <strong>Debjit Pramanick</strong>
-                        <p>Added on: 6 Feb, 2021</p>
-                        <p className="about">Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p>
-                        <p className="phone">+91 93303 48081</p>
+                        <strong>{user.name}</strong>
+                        <p>Added on: {user.dateAdded}</p>
+                        <p className="about">{user.desc}</p>
+                        <p className="phone">{user.phone}</p>
                     </div>
 
                 </div>

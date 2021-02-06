@@ -26,5 +26,16 @@ userRouter.post(
 )
 
 
+userRouter.get(
+    '/get',
+    async (req, res) => {
+        User.find({}, (error,result)=>{
+            if(error) res.send(error)
+            else res.send(result)
+        })
+
+    }
+)
+
 
 export default userRouter
