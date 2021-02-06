@@ -80,3 +80,27 @@
     border-radius: 6px;
     padding: 0 10px;
 }
+
+
+/*-------------POP UP----------------*/ 
+
+.pop-up{
+    width: 100vw;
+    height: 100vh;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    background-color: rgba(0, 0, 0, 0.774);
+}
+
+.input-box{
+    width: 600px;
+    padding: 40px;
+    border-radius: 6px;
+    background-color: white;
+}

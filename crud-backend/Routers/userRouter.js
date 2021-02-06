@@ -4,18 +4,20 @@ const userRouter = express.Router()
 
 
 
-userRouter.get(
-    '/',
+userRouter.post(
+    '/add',
     async(req,res) => {
-        const data = new User({
-            name: "Debjit",
-            dateAdded: "6 Feb, 2021",
-            phone: +919330348081
-        });
+        const data = {
+            name: req.body.name,
+            dateAdded: req.body.dateAdded,
+            desc: req.body.desc,
+            phone: req.body.phone
+        }
 
+        const user = new User(data);
 
         try {
-            await data.save();
+            await user.save();
         } catch (error) {
             console.log(error)
         }

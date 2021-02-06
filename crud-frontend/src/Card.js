@@ -1,12 +1,19 @@
-import React from 'react'
+import React, {useState} from 'react'
 
 import CreateIcon from '@material-ui/icons/Create';
 import DeleteIcon from '@material-ui/icons/Delete';
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
+import Popup from './Popup';
 
 const Card = ({ type }) => {
+
+    const [popup, setPopup] = useState(false);
+
     return (
         <div>
+            {
+                popup && <Popup setPopup={setPopup}/>
+            }
             {(type === 'card') ? (
             <div className="cards">
                 <div className="display">
@@ -28,8 +35,9 @@ const Card = ({ type }) => {
                 </div>
             </div>
             ) : (
-                    <div className="addcards">
-                        <AddCircleOutlineIcon /> 
+                    <div className="addcards"
+                    onClick={() => setPopup(true)}>
+                        <AddCircleOutlineIcon/> 
                     </div>
             )}
 
