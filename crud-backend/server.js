@@ -3,6 +3,10 @@ import cors from 'cors'
 import mongoose from 'mongoose'
 import userRouter from './Routers/userRouter.js';
 
+import {createServer} from 'http'
+import {Server} from 'socket.io'
+
+
 const app = express();
 app.use(express.json());
 app.use(cors());
@@ -26,3 +30,14 @@ mongoose.connect(url,{
 // Step -4: Now create routes (In routers folder and use here)
 
 app.use("/users", userRouter);
+
+
+// Step - 5: Now implement socket.io
+
+const server = createServer(app)
+const socketIo = new Server(server)
+
+socketIo.on('connection', socket => {
+    
+})
+

@@ -11,7 +11,7 @@ const Home = () => {
     const [users, setUsers] = useState()
 
     useEffect(()=>{
-        axios.get('http://localhost:5000/users/get')
+        axios.get('http://localhost:5000/users/read')
         .then(res => {
             setUsers(res.data)
         })

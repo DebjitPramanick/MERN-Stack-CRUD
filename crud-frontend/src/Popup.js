@@ -1,39 +1,65 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import CancelIcon from '@material-ui/icons/Cancel';
+
+// For real time
+import io from 'socket.io-client'
 
 
 // For uploading data
 import axios from 'axios'
 
-const Popup = ({ setPopup }) => {
+//const socket = io('http://localhost:5000/');
 
+const Popup = ({ setPopup, user }) => {
+
+    
+    
     const [data, setData] = useState({
         name: '',
         dateAdded: '',
         desc: '',
         phone: ''
     });
+
+    useEffect(() => {
+        if(user) setData(user);
+    }, [])
+
+
     const date = new Date();
     const storeDate = `${date.getDate()} ${date.toLocaleString('default', { month: 'short' })}, ${date.getFullYear()}`
 
 
     const addUser = () => {
+        
         const uData = {
             name: data.name,
             dateAdded: storeDate,
             desc: data.desc,
-            phone: data.phone
+            phone: data.phone,
         }
-
-        console.log(uData);
-
+        //socket.on('user-added',uData)
         // Now add user data using axios
-
-
-        axios.post("http://localhost:5000/users/add", uData)
-
+        axios.post("http://localhost:5000/users/create", uData)
+        
         setPopup(false)
     }
+
+
+
+    const updateUser = () => {
+        const uData = {
+            name: data.name,
+            dateAdded: storeDate,
+            desc: data.desc,
+            phone: data.phone,
+            _id: data._id
+        }
+        axios.put("http://localhost:5000/users/update",uData)
+        setPopup(false)
+    }
+
+
 
     return (
         <div className="pop-up">
@@ -60,9 +86,16 @@ const Popup = ({ setPopup }) => {
                         phone: e.target.value
                     }))}
                 />
-                <button onClick={addUser}>
-                    Add User
-                </button>
+                {!user ? (
+                    <button onClick={addUser}>
+                        Add User
+                    </button>
+                ): (
+                        <button onClick={updateUser}>
+                            Update User
+                        </button>
+                )}
+                
             </div>
         </div>
     )

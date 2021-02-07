@@ -5,7 +5,7 @@ const userRouter = express.Router()
 
 
 userRouter.post(
-    '/add',
+    '/create',
     async(req,res) => {
         const data = {
             name: req.body.name,
@@ -26,14 +26,48 @@ userRouter.post(
 )
 
 
+userRouter.put(
+    '/update',
+    async (req, res) => {
+        const data = {
+            name: req.body.name,
+            dateAdded: req.body.dateAdded,
+            desc: req.body.desc,
+            phone: req.body.phone,
+        }
+
+        const id = req.body._id;
+
+        try {
+            await User.findByIdAndUpdate(id,data,(err,updatedData)=>{
+                if(!err) res.send(`Updated data`)
+                else console.log(err)
+            })
+        } catch (error) {
+            console.log(error)
+        }
+
+    }
+)
+
+
+userRouter.delete(
+    '/delete/:id',
+    async(req,res) => {
+        const id = req.params.id;
+        await User.findByIdAndRemove(id).exec();
+        res.send('Deleted');
+    }
+)
+
+
 userRouter.get(
-    '/get',
+    '/read',
     async (req, res) => {
         User.find({}, (error,result)=>{
             if(error) res.send(error)
             else res.send(result)
         })
-
     }
 )
 

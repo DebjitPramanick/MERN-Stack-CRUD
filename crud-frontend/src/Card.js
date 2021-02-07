@@ -4,15 +4,27 @@ import CreateIcon from '@material-ui/icons/Create';
 import DeleteIcon from '@material-ui/icons/Delete';
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import Popup from './Popup';
+import axios from 'axios';
 
 const Card = ({ type,user }) => {
 
     const [popup, setPopup] = useState(false);
 
+    const [update, setUpdate] = useState();
+
+    const handleUpdate = () => {
+        setUpdate(user);
+        setPopup(true);
+    }
+
+    const handleDelete = (id) => {
+        axios.delete(`http://localhost:5000/users/delete/${id}`)
+    }
+
     return (
         <div>
             {
-                popup && <Popup setPopup={setPopup}/>
+                popup && <Popup setPopup={setPopup} user={user}/>
             }
             {(type === 'card') ? (
             <div className="cards">
@@ -26,10 +38,10 @@ const Card = ({ type,user }) => {
 
                 </div>
                 <div className="btn-container">
-                    <div>
+                    <div onClick={handleUpdate}>
                         <CreateIcon />
                     </div>
-                    <div>
+                    <div onClick={() => handleDelete(user._id)}>
                         <DeleteIcon />
                     </div>
                 </div>
