@@ -3,7 +3,6 @@ import User from '../Models/Users.js'
 const userRouter = express.Router()
 
 
-
 userRouter.post(
     '/create',
     async(req,res) => {

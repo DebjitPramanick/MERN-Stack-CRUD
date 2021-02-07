@@ -24,10 +24,10 @@ const Home = () => {
         <div>
             <div className="container">
                 {users && users.map(user => (
-                    <Card type="card" key={user._id} user={user}/>
+                    <Card type="card" key={user._id} user={user} allusers={users}/>
                 ))}
                 
-                <Card type="add" />
+                <Card type="add" setUsers={setUsers}/>
             </div>
         </div>
     )

@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 
 import CreateIcon from '@material-ui/icons/Create';
 import DeleteIcon from '@material-ui/icons/Delete';
@@ -6,7 +6,12 @@ import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import Popup from './Popup';
 import axios from 'axios';
 
-const Card = ({ type,user }) => {
+
+// For real time
+import io from 'socket.io-client'
+const socket = io('http://localhost:5000/');
+
+const Card = ({ type, user, setUsers, allusers }) => {
 
     const [popup, setPopup] = useState(false);
 
@@ -17,14 +22,25 @@ const Card = ({ type,user }) => {
         setPopup(true);
     }
 
+    // useEffect(() => {
+    //     socket.on('user-deleted', 1)
+    // }, [])
+
     const handleDelete = (id) => {
         axios.delete(`http://localhost:5000/users/delete/${id}`)
+        socket.on('user-deleted', user._id)
+
+        const newUsers = allusers.filter(user => {
+            return user._id !== id
+        })
+
+        console.log(newUsers)
     }
 
     return (
         <div>
             {
-                popup && <Popup setPopup={setPopup} user={user}/>
+                popup && <Popup setPopup={setPopup} user={user} setUsers={setUsers}/>
             }
             {(type === 'card') ? (
             <div className="cards">

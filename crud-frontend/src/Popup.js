@@ -8,11 +8,10 @@ import io from 'socket.io-client'
 // For uploading data
 import axios from 'axios'
 
-//const socket = io('http://localhost:5000/');
+const socket = io('http://localhost:5000/');
 
-const Popup = ({ setPopup, user }) => {
+const Popup = ({ setPopup, user, setUsers }) => {
 
-    
     
     const [data, setData] = useState({
         name: '',
@@ -30,6 +29,15 @@ const Popup = ({ setPopup, user }) => {
     const storeDate = `${date.getDate()} ${date.toLocaleString('default', { month: 'short' })}, ${date.getFullYear()}`
 
 
+    
+
+    useEffect(()=>{
+        socket.on('user-added', newData => {
+            console.log(newData)
+        })
+    },[])
+
+
     const addUser = () => {
         
         const uData = {
@@ -38,7 +46,10 @@ const Popup = ({ setPopup, user }) => {
             desc: data.desc,
             phone: data.phone,
         }
-        //socket.on('user-added',uData)
+
+        // Making realtime using Socket.io
+        socket.emit('user-added',uData)
+        
         // Now add user data using axios
         axios.post("http://localhost:5000/users/create", uData)
         
