@@ -15,11 +15,7 @@ const Card = ({ type, user, setUsers, allusers }) => {
 
     const [popup, setPopup] = useState(false);
 
-    const [cardUser, setCardUser] = useState();
-
-    const handleUpdate = () => {
-        setPopup(true);
-    }
+    const [cardUser, setCardUser] = useState(user);
 
     const handleDelete = (id) => {
         axios.delete(`http://localhost:5000/users/delete/${id}`)
@@ -33,28 +29,28 @@ const Card = ({ type, user, setUsers, allusers }) => {
         })
     }
 
-    console.log("TO update",cardUser)
+    
 
     return (
         <div>
             {
                 popup && <Popup setPopup={setPopup} 
-                user={user} setUsers={setUsers} 
+                user={cardUser} setUsers={setUsers} 
                 setCardUser={setCardUser}/>
             }
             {(type === 'card') ? (
                 <div className="cards">
                     <div className="display">
                         <div className="content">
-                            <strong>{user.name}</strong>
-                            <p>Added on: {user.dateAdded}</p>
-                            <p className="about">{user.desc}</p>
-                            <p className="phone">{user.phone}</p>
+                            <strong>{cardUser.name}</strong>
+                            <p>Added on: {cardUser.dateAdded}</p>
+                            <p className="about">{cardUser.desc}</p>
+                            <p className="phone">{cardUser.phone}</p>
                         </div>
 
                     </div>
                     <div className="btn-container">
-                        <div onClick={handleUpdate}>
+                        <div onClick={() => setPopup(true)}>
                             <CreateIcon />
                         </div>
                         <div onClick={() => handleDelete(user._id)}>

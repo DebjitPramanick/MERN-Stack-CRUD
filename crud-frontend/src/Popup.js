@@ -64,14 +64,12 @@ const Popup = ({ setPopup, user, setUsers, setCardUser }) => {
         }
         axios.put("http://localhost:5000/users/update",uData)
 
-        socket.on('user-updated', (updatedData) => {
+        socket.once('user-updated', (updatedData) => {
             setCardUser(updatedData)
         })
 
         setPopup(false)
     }
-
-
 
     return (
         <div className="pop-up">
