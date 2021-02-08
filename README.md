@@ -6,7 +6,6 @@ I have created it with **React JS** in frontend, **Node.js, Express.js** in back
 <br>
 <br>
 <br>
-> ### Web App Link - https://pdf-generator-2021.netlify.app/
 
 
 <br>
