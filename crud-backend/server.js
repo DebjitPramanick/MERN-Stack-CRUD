@@ -41,9 +41,9 @@ const socketIo = new io.Server(server, {
     }
 });;
 
-socketIo.on('connection', (socket) => {
-    console.log('Socket IO is connected.....');
-});
+// socketIo.on('connection', (socket) => {
+//     console.log('Socket IO is connected.....');
+// });
 
 
 const connection = mongoose.connection;
@@ -51,7 +51,7 @@ const connection = mongoose.connection;
 connection.once('open', ()=>{
     console.log("MongoDB databse connected.");
 
-    const changeStream = connection.collection('users').watch();
+    const changeStream = connection.collection('users').watch({ fullDocument: 'updateLookup' });
 
     changeStream.on('change', (change)=>{
         switch(change.operationType){
@@ -68,6 +68,17 @@ connection.once('open', ()=>{
             
             case 'delete':
                 socketIo.emit('user-deleted', change.documentKey._id)
+                break;
+
+            case 'update':
+                const updatedUser = {
+                    _id: change.fullDocument._id,
+                    name: change.fullDocument.name,
+                    dateAdded: change.fullDocument.dateAdded,
+                    desc: change.fullDocument.desc,
+                    phone: change.fullDocument.phone
+                }
+                socketIo.emit('user-updated',updatedUser)
                 break;
         }
     })

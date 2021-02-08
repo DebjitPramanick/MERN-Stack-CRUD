@@ -10,7 +10,7 @@ import axios from 'axios'
 
 const socket = io('http://localhost:5000/');
 
-const Popup = ({ setPopup, user, setUsers }) => {
+const Popup = ({ setPopup, user, setUsers, setCardUser }) => {
 
     
     const [data, setData] = useState({
@@ -29,15 +29,6 @@ const Popup = ({ setPopup, user, setUsers }) => {
     const storeDate = `${date.getDate()} ${date.toLocaleString('default', { month: 'short' })}, ${date.getFullYear()}`
 
 
-    
-
-    useEffect(()=>{
-        socket.on('user-added', newData => {
-            console.log(newData)
-        })
-    },[])
-
-
     const addUser = () => {
         
         const uData = {
@@ -47,11 +38,16 @@ const Popup = ({ setPopup, user, setUsers }) => {
             phone: data.phone,
         }
 
-        // Making realtime using Socket.io
-        socket.emit('user-added',uData)
         
         // Now add user data using axios
         axios.post("http://localhost:5000/users/create", uData)
+
+        // Making realtime using Socket.io
+        socket.once('user-added', newData => {
+            console.log(newData)
+            setUsers((user) => ([...user, newData]))
+        })
+        
         
         setPopup(false)
     }
@@ -61,12 +57,17 @@ const Popup = ({ setPopup, user, setUsers }) => {
     const updateUser = () => {
         const uData = {
             name: data.name,
-            dateAdded: storeDate,
+            dateAdded: data.dateAdded,
             desc: data.desc,
             phone: data.phone,
             _id: data._id
         }
         axios.put("http://localhost:5000/users/update",uData)
+
+        socket.on('user-updated', (updatedData) => {
+            setCardUser(updatedData)
+        })
+
         setPopup(false)
     }
 
@@ -75,7 +76,8 @@ const Popup = ({ setPopup, user, setUsers }) => {
     return (
         <div className="pop-up">
             <div className="input-box">
-                <CancelIcon onClick={() => setPopup(false)} />
+                <CancelIcon onClick={() => setPopup(false)} className="cross-btn" />
+                <h3>Enter user details:</h3>
                 <input type="text"
                     value={data.name}
                     onChange={(e) => setData( prevstate => ({

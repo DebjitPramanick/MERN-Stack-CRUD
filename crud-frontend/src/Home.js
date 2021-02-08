@@ -24,7 +24,9 @@ const Home = () => {
         <div>
             <div className="container">
                 {users && users.map(user => (
-                    <Card type="card" key={user._id} user={user} allusers={users}/>
+                    <Card type="card" key={user._id} 
+                    user={user} allusers={users} 
+                    setUsers={setUsers}/>
                 ))}
                 
                 <Card type="add" setUsers={setUsers}/>
